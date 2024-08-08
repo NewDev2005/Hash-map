@@ -71,6 +71,19 @@ class HashMap
     @arr[index] = previous_nodes
     return value
   end
+
+  def length
+    length = @arr.length
+    count = 0
+    for i in (0...length)
+      node = @arr[i]
+      until node.nil?
+        count += 1
+        node = node.next
+      end
+    end
+    count
+  end
 end
 
 
