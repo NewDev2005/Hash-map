@@ -16,6 +16,8 @@ class HashMap
 
   def set(key, value)
     index = hash(key)
+    raise IndexError if index.negative? || index >= @arr.length
+
     if @arr[index].nil?
       @arr[index] = Node.new(key, value)
     else
@@ -52,14 +54,23 @@ class HashMap
     end
     return false
   end
+
+  def remove(key)
+    index = hash(key)
+    after_removal = nil
+    until @arr[index].nil?
+      if @arr[index].key == key
+        value = @arr[index].value
+        after_removal = @arr[index]
+        break
+      end
+      previous_nodes = @arr[index]
+      @arr[index] = @arr[index].next
+    end
+    previous_nodes = after_removal.next
+    @arr[index] = previous_nodes
+    return value
+  end
 end
 
 
-# hash = HashMap.new
-
-# hash.set('Ruby','Rails')
-# hash.set('python','Django')
-# hash.set('javascript','Node.js')
-# hash.set('php','laravael')
-
-# puts hash.has?('python')
