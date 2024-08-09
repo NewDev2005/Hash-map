@@ -84,6 +84,40 @@ class HashMap
     end
     count
   end
+
+  def clear
+    @arr.each_with_index do |elem, index|
+      @arr[index] = nil
+    end
+  end
+
+  def keys
+    keys = []
+    @arr.each_with_index do |elem, index|
+      node = @arr[index]
+      until node.nil?
+        if !node.key.nil?
+          keys.push(node.key)
+        end
+        node = node.next
+      end
+    end
+    keys
+  end
+
+  def values
+    values = []
+    @arr.each_with_index do |elem, index|
+      node = @arr[index]
+      until node.nil?
+        if !node.value.nil?
+          values.push(node.value)
+        end
+        node = node.next
+      end
+    end
+    values
+  end
 end
 
 
