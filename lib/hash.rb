@@ -18,18 +18,19 @@ class HashMap
     index = hash(key)
     raise IndexError if index.negative? || index >= @arr.length
 
+    node = @arr[index]
     if @arr[index].nil?
       @arr[index] = Node.new(key, value)
     else
-      previous_nodes = @arr[index]
-      until @arr[index].nil?
-        if @arr[index].key == key
-          @arr[index].value = value
+      until node.nil?
+        if node.key == key
+          node.value = value
         end
-        @arr[index] = @arr[index].next
+        node = node.next
       end
-      new_node = Node.new(key, value, previous_nodes)
-      @arr[index] = new_node
+      new_node = Node.new(key, value, node)
+      node = new_node
+      @arr[index] = node
     end
   end
 
@@ -117,6 +118,25 @@ class HashMap
       end
     end
     values
+  end
+
+  def entries
+    entries = []
+    @arr.each_with_index do |elem, index|
+      node = @arr[index]
+      if @arr[index].nil?
+        next
+      else
+        until node.nil?
+          if node.key
+            entries[index] = Array.new.push(node.key).push(node.value)
+          end
+          node = node.next 
+        end
+      end
+    end
+     entries.delete(nil)
+    entries
   end
 end
 
