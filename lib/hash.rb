@@ -2,7 +2,9 @@ require_relative 'node'
 
 class HashMap
   def initialize
-    @arr = Array.new(16)
+    @capacity = 16
+    @load_factor = 0.8
+    @arr = Array.new(@capacity)
   end
 
   def hash(key)
@@ -11,7 +13,7 @@ class HashMap
 
     key.each_char {|char| hash_code = prime_number * hash_code + char.ord}
 
-    hash_code %= 16
+    hash_code %= @capacity
   end
 
   def set(key, value)
@@ -31,6 +33,11 @@ class HashMap
       new_node = Node.new(key, value, node)
       node = new_node
       @arr[index] = node
+    end
+
+    if @capacity*@load_factor.round < keys.length
+      @capacity += 8
+      set(key, value)
     end
   end
 
