@@ -1,4 +1,5 @@
 require_relative 'node'
+# require 'pry-byebug'
 
 class HashMap
   def initialize
@@ -27,6 +28,7 @@ class HashMap
       until node.nil?
         if node.key == key
           node.value = value
+          return
         end
         node = node.next
       end
@@ -35,19 +37,18 @@ class HashMap
       @arr[index].next = node
     end
 
-    total_entries = keys.length
-    if (@capacity*@load_factor.round )< total_entries
+    if (@capacity*@load_factor).round <= keys.length
       @capacity += 8
       temp_arr = entries
       @arr = Array.new(@capacity)
-      puts @arr.length
       clear
       temp_arr.each_with_index do |elem, index|
         set(elem[0], elem[1])
       end
     end
-    
+    # binding.pry
   end
+
 
   def get(key)
     index = hash(key)
@@ -152,5 +153,6 @@ class HashMap
     entries
   end
 end
+ 
 
 
