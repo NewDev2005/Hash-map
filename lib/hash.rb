@@ -32,13 +32,21 @@ class HashMap
       end
       new_node = Node.new(key, value, node)
       node = new_node
-      @arr[index] = node
+      @arr[index].next = node
     end
 
-    if @capacity*@load_factor.round < keys.length
+    total_entries = keys.length
+    if (@capacity*@load_factor.round )< total_entries
       @capacity += 8
-      set(key, value)
+      temp_arr = entries
+      @arr = Array.new(@capacity)
+      puts @arr.length
+      clear
+      temp_arr.each_with_index do |elem, index|
+        set(elem[0], elem[1])
+      end
     end
+    
   end
 
   def get(key)
@@ -61,6 +69,10 @@ class HashMap
       @arr[index] = @arr[index].next
     end
     return false
+  end
+
+  def arr_length
+    @arr.length
   end
 
   def remove(key)
@@ -129,20 +141,14 @@ class HashMap
 
   def entries
     entries = []
-    @arr.each_with_index do |elem, index|
-      node = @arr[index]
-      if @arr[index].nil?
-        next
-      else
-        until node.nil?
-          if node.key
-            entries[index] = Array.new.push(node.key).push(node.value)
-          end
-          node = node.next 
-        end
-      end
+    keys = keys()
+    values = values()
+    index = 0
+
+    until keys[index].nil?
+      entries[index] = Array.new.push(keys[index]).push(values[index])
+      index += 1
     end
-     entries.delete(nil)
     entries
   end
 end
